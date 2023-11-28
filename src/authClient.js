@@ -13,20 +13,6 @@ class AuthClient {
             this.#isAuthenticated = true;
             return;
         }
-
-        // Check uri param that could indicate that auth is good
-        if (window.location.search.includes('authResult=yay')) {
-            this.setAuthenticatedStatus(true)
-
-            let searchParams = new URLSearchParams(window.location.search);
-            searchParams.delete('authResult');
-            if (history.replaceState) {
-                let searchString = searchParams.toString().length > 0 ? '?' + searchParams.toString() : '';
-                let newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + searchString + window.location.hash;
-                history.replaceState(null, '', newUrl);
-            }
-            return;
-        }
     }
 
     async exchangeSignCodeToTokenCookie(code) {
