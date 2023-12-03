@@ -1,3 +1,5 @@
+import { initAddressSuggestionInput } from "./createListing/addressSuggestionInput"
+
 let listingState = {
     type: '', // offering or lookingFor,
     goal: '', // rent or sell,
@@ -44,5 +46,7 @@ listingPropertyTypeEls.forEach(el => {
         updateStateAndPrint({...listingState, propertyType: value})
     })
 })
+
+initAddressSuggestionInput();
 
 document.getElementById('page-content').style.display = 'block'
