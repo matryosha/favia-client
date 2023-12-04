@@ -1,4 +1,5 @@
-const serverUrl = 'http://localhost:5000'
+import { SERVER_URL as serverUrl } from './serverEndpoints'
+
 
 class AuthClient {
     #isAuthenticated = false;
