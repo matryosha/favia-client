@@ -1,8 +1,7 @@
 {
-  "name": "webpack-webflow-test",
+  "name": "favia-client",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "publish-site": "python scripts/publish-site.py",
     "activate-pages-scripts": "python scripts/activate-pages-scripts.py",
@@ -13,7 +12,6 @@
     "push-github": "python scripts/push-github.py",
     "build": "rm -rf dist/.* dist/* ; npx webpack",
     "build-and-publish": "npm run build && npm run push-github && npm run generate-integrity && npm run create-basename-hashname-map && npm run upload-to-registry && npm run activate-site-scripts && npm run activate-pages-scripts && npm run publish-site",
-
     "dev": "webpack-cli watch -c 'webpack.config.dev.js' --entry ./src/index.js"
   },
   "author": "",
@@ -21,8 +19,5 @@
   "devDependencies": {
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4"
-  },
-  "dependencies": {
-    "react-dom": "^18.2.0"
   }
 }
