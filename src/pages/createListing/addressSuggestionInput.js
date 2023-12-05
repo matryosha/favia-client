@@ -5,6 +5,7 @@ import { debounce } from "../../utils";
 export function initAddressSuggestionInput() {
     const ac = new AddressAutoComplete()
     ac.init(document.getElementById('address-input'))
+    return ac
 }
 
 class AddressAutoComplete {
@@ -12,6 +13,7 @@ class AddressAutoComplete {
     suggestContainerEl = null;
     suggestItemNode = null;
     #debounceKey = ''
+    #suggestionSelectedCallback = undefined
 
 
     init(inputEl) {
@@ -57,6 +59,7 @@ class AddressAutoComplete {
         if (this.#debounceKey !== capturedKey) return;
         this.updateSuggestedContainer(result)
         this.showSuggestContainer()
+
     }
 
     updateSuggestedContainer(items) {
@@ -70,11 +73,20 @@ class AddressAutoComplete {
         });
     }
 
+    onSuggestionSelected(cb) {
+        this.#suggestionSelectedCallback = cb
+    }
+
+    setInputValue(str) {
+        this.inputEl.value = str 
+    }
+
     handleSuggestionClick(data) {
         this.hideSuggestContainer()
-        this.inputEl.value = data['display_name']
+        this.setInputValue(data['display_name'])
 
         console.log('clicked on ', data)
+        this.#suggestionSelectedCallback(data)
     }
 
     showSuggestContainer() {

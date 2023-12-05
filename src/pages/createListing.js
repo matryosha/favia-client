@@ -1,4 +1,7 @@
 import { initAddressSuggestionInput } from "./createListing/addressSuggestionInput"
+import { initMap } from "./createListing/map"
+import { REVERSE_GEO_URL } from "../serverEndpoints"
+
 
 let listingState = {
     type: '', // offering or lookingFor,
@@ -47,6 +50,38 @@ listingPropertyTypeEls.forEach(el => {
     })
 })
 
-initAddressSuggestionInput();
+const autoSuggestion = initAddressSuggestionInput();
+
+const map = initMap(async (e, setMapMarker) => {
+    const {lat, lng} = e.latlng;
+
+    const reverseGeoResponse = await fetch(REVERSE_GEO_URL + `?lat=${lat}&lon=${lng}`)
+    const reverseGeoResult = await reverseGeoResponse.json()
+
+    if (reverseGeoResult.error) {
+        return
+    }
+
+    setMapMarker()
+    autoSuggestion.setInputValue(reverseGeoResult['display_name'])
+})
+
+autoSuggestion.onSuggestionSelected(async (suggestion) => {
+    let zoom = 13;
+
+    const placeRank = suggestion['place_rank']
+    if (placeRank > 25) {
+        zoom = 19
+    }
+    
+
+    map.setMapView(suggestion.lat, suggestion.lon, zoom)
+})
 
 document.getElementById('page-content').style.display = 'block'
+
+// fix to one map title
+document.addEventListener('load', () => {
+
+    setTimeout(() => map.invalidateMapSize(), 1000)
+})
