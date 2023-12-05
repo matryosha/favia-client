@@ -6,7 +6,15 @@ const pages = fs.readdirSync('./src/pages')
 
 module.exports = {
     // mode: "development",
-    entry: {...pages, index: './src/index.js'},
+    entry: {...pages, index: { 
+        import: './src/index.js',
+        library: {
+            // all options under `output.library` can be used here
+            name: 'Favia',
+            type: 'var'
+          },
+
+    }},
     output: {
         filename: '[name].[hash].js',
         path: path.resolve(__dirname, 'dist'),
