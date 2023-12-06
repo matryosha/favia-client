@@ -11,10 +11,12 @@ let listingState = {
     propertyAddress: '',
 }
 
+
 function updateStateAndPrint(newListingState) {
     listingState = newListingState
     console.log('new listing state: ', listingState)
 }
+
 
 const listingTypeEls = document.querySelectorAll('[data-listing-type]')
 const listingGoalEls = document.querySelectorAll('[data-listing-goal]')
@@ -52,9 +54,18 @@ listingPropertyTypeEls.forEach(el => {
 
 const autoSuggestion = initAddressSuggestionInput();
 
+let isInReverseGeoProcess = false
+
+
 const map = initMap(async (e, setMapMarker) => {
     const {lat, lng} = e.latlng;
+    
+    if (isInReverseGeoProcess) {
+        return
+    }
 
+    isInReverseGeoProcess = true
+    autoSuggestion.disableInput()
     const reverseGeoResponse = await fetch(REVERSE_GEO_URL + `?lat=${lat}&lon=${lng}`)
     const reverseGeoResult = await reverseGeoResponse.json()
 
@@ -64,7 +75,10 @@ const map = initMap(async (e, setMapMarker) => {
 
     setMapMarker()
     autoSuggestion.setInputValue(reverseGeoResult['display_name'])
+    autoSuggestion.enableInput()
+    isInReverseGeoProcess = false
 })
+
 
 autoSuggestion.onSuggestionSelected(async (suggestion) => {
     let zoom = 13;
@@ -78,10 +92,8 @@ autoSuggestion.onSuggestionSelected(async (suggestion) => {
     map.setMapView(suggestion.lat, suggestion.lon, zoom)
 })
 
-document.getElementById('page-content').style.display = 'block'
+export function getMap() {
+    return map
+}
 
-// fix to one map title
-document.addEventListener('load', () => {
-
-    setTimeout(() => map.invalidateMapSize(), 1000)
-})
+document.getElementById('page-content').style.display = 'block';

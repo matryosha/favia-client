@@ -73,6 +73,14 @@ class AddressAutoComplete {
         });
     }
 
+    disableInput() {
+        this.inputEl.setAttribute('disabled', '');
+    }
+
+    enableInput() {
+        this.inputEl.removeAttribute('disabled');
+    }
+
     onSuggestionSelected(cb) {
         this.#suggestionSelectedCallback = cb
     }
