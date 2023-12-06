@@ -2,7 +2,13 @@ const path = require('path');
 const fs = require('fs');
 
 const pages = fs.readdirSync('./src/pages')
-                .reduce((acc, v) => ({ ...acc, [v.replace('.js', '')]: `./src/pages/${v}` }), {});
+                .reduce((acc, v) => ({ ...acc, [v.replace('.js', '')]: { 
+                    import: `./src/pages/${v}`,  
+                    library: {
+                        name: ['Favia', 'pageModule'],
+                        type: 'var'
+                    }
+                }}), {});
 
 module.exports = {
     // mode: "development",
