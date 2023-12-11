@@ -101,4 +101,6 @@ export function getMap() {
     return map
 }
 
+export { sectionDisplayManager }
+
 document.getElementById('page-content').style.display = 'block';
