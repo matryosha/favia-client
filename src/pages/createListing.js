@@ -1,7 +1,10 @@
 import { initAddressSuggestionInput } from "./createListing/addressSuggestionInput"
 import { initMap } from "./createListing/map"
 import { REVERSE_GEO_URL } from "../serverEndpoints"
+import { SectionDisplayManager } from "./createListing/formStateManager"
 
+
+const sectionDisplayManager = new SectionDisplayManager()
 
 let listingState = {
     type: '', // offering or lookingFor,
@@ -49,6 +52,8 @@ listingPropertyTypeEls.forEach(el => {
     el.addEventListener('click', () => {
         const value = el.dataset['listingPropertyType']
         updateStateAndPrint({...listingState, propertyType: value})
+
+        sectionDisplayManager.showSection("address")
     })
 })
 
