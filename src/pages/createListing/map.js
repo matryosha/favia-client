@@ -34,5 +34,5 @@ export function initMap(mapClickCallback) {
 
     console.log(map)
 
-    return { setMapView, invalidateMapSize: map.invalidateSize }
+    return { setMapView, invalidateMapSize: () => map.invalidateSize() }
 }
