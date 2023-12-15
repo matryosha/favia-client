@@ -1,10 +1,11 @@
 import { initAddressSuggestionInput } from "./createListing/addressSuggestionInput"
 import { initMap } from "./createListing/map"
 import { REVERSE_GEO_URL } from "../serverEndpoints"
-import { SectionDisplayManager } from "./createListing/formStateManager"
+import { ParametersSectionManager, SectionDisplayManager } from "./createListing/formStateManager"
 
 
 const sectionDisplayManager = new SectionDisplayManager()
+const parametersSectionManager = new ParametersSectionManager()
 
 let listingState = {
     type: '', // offering or lookingFor,
@@ -99,6 +100,11 @@ autoSuggestion.onSuggestionSelected(async (suggestion) => {
 
 export function getMap() {
     return map
+}
+
+export function handleAddressContinueBtnClicked() {
+    sectionDisplayManager.showSection('media')
+    sectionDisplayManager.showSection('parameters')
 }
 
 export { sectionDisplayManager }
