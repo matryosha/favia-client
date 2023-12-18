@@ -1,4 +1,4 @@
-import { throwIfUndefinedOrNull } from "../../utils"
+import { throwIfUndefinedOrNull, throwIfUndefinedOrNullWithKeys } from "../../utils"
 
 export class SectionDisplayManager {
     sectionEls = null
@@ -47,10 +47,15 @@ export class ParametersSectionManager {
         isSmokingAllowed: false,
         hasParking: false,
         rentTermType: null, // short or long
+        floorNumber: null,
+        floorTotalNumber: null,
         flatType: '',
         energyClass: '',
         furniture: ''
     }
+
+    #afterStateChangedCb = undefined
+    #requiredFilledCb = () => {}
 
     constructor() {
         function id(id) {
@@ -67,8 +72,10 @@ export class ParametersSectionManager {
         const furnitureInputEl = id('Furniture-field')
         const longTermRadioEl = id('long-term-radio-input')
         const shortTermRadioEl = id('short-term-radio-input')
+        const floorNumberInputEl = id('fs-inputcounter-1-input')
+        const floorTotalNumberInputEl = id('fs-inputcounter-2-input')
 
-        throwIfUndefinedOrNull(totalAreaInputEl, petsTglEl, obstacleFreeTglEl, smokingTglEl, parkingTglEl, flatTypeInputEl, energyClassInputEl, furnitureInputEl, longTermRadioEl, shortTermRadioEl)
+        throwIfUndefinedOrNull(totalAreaInputEl, petsTglEl, obstacleFreeTglEl, smokingTglEl, parkingTglEl, flatTypeInputEl, energyClassInputEl, furnitureInputEl, longTermRadioEl, shortTermRadioEl, floorNumberInputEl, floorTotalNumberInputEl)
 
         this.state = {
             ...this.state,
@@ -107,11 +114,153 @@ export class ParametersSectionManager {
         shortTermRadioEl.addEventListener('click', () => {
             this.#setStateAndLog({...this.state, rentTermType: 'short'})
         })
+        floorNumberInputEl.addEventListener('input', () => {
+            this.#setStateAndLog({...this.state, floorNumber: floorNumberInputEl.value})
+        })
+        floorTotalNumberInputEl.addEventListener('input', () => {
+            this.#setStateAndLog({...this.state, floorTotalNumber: floorTotalNumberInputEl.value})
+        })
+
+        this.#afterStateChangedCb = () => this.#checkAndNotifyIfRequiredIsFilled();
+    }
+
+    onRequiredIsFilled(cb) {
+        this.#requiredFilledCb = () => cb()
     }
 
     #setStateAndLog(state) {
         this.state = state;
+        this.#afterStateChangedCb();
         console.log('New parameters section state: ', state);
     }
+
+    #checkAndNotifyIfRequiredIsFilled() {
+        function isNullOrEmpty(...args) {
+            try {
+                for (const arg of args) {
+                    if (arg === null || arg.trim() === '') return true
+                }
+            } catch {
+                return true
+            }
+
+            return false
+        }
+        const { rentTermType, floorNumber, floorTotalNumber, flatType, totalArea } = this.state;
+
+        if (totalArea === 0) return
+
+        if (isNullOrEmpty(rentTermType, floorNumber, floorTotalNumber, flatType)) return
+        this.#afterStateChangedCb = () => {}
+        this.#requiredFilledCb()
+    }
+}
+
+export class PropertyValuationSectionManager {
+    state = {
+        pricePerMonth: 0,
+        servicesPerMonth: 0,
+        deposit: 0,
+        additionalFees: 0,
+    }
+
+    #afterStateChangedCb = undefined
+    #requiredFilledCb = () => {}
+
+    constructor() {
+        function id(id) {
+            return document.getElementById(id)
+        }
+
+        const pricePerMonthInputEl = id('price-per-month-input')
+        const servicesPerMonthInputEl = id('services-per-month-input')
+        const depositInputEl = id('Deposit')
+        const additionalFeesInputEl = id('Additional-fees')
+
+        throwIfUndefinedOrNull(pricePerMonthInputEl, servicesPerMonthInputEl, depositInputEl, additionalFeesInputEl)
+
+        pricePerMonthInputEl.addEventListener('input', () => {
+            this.#setStateAndLog({...this.state, pricePerMonth: pricePerMonthInputEl.value})
+        })
+        servicesPerMonthInputEl.addEventListener('input', () => {
+            this.#setStateAndLog({...this.state, servicesPerMonth: servicesPerMonthInputEl.value})
+        })
+        depositInputEl.addEventListener('input', () => {
+            this.#setStateAndLog({...this.state, deposit: depositInputEl.value})
+        })
+        additionalFeesInputEl.addEventListener('input', () => {
+            this.#setStateAndLog({...this.state, additionalFees: additionalFeesInputEl.value})
+        })
+
+        this.#afterStateChangedCb = () => this.#checkAndNotifyIfRequiredIsFilled()
+    }
+
+    onRequiredIsFilled(cb) {
+        this.#requiredFilledCb = cb
+    }
+
+    #checkAndNotifyIfRequiredIsFilled() {
+        function isZeroOrUndefined(...args) {
+            try {
+                for (const arg of args) {
+                    if (arg === undefined || arg === 0 || arg.trim() === '') return true
+                }
+            }
+            catch {
+                return true
+            }
+
+            return false
+
+        }
+        const {pricePerMonth, servicesPerMonth, deposit, additionalFees} = this.state
+
+        try {
+            parseInt(additionalFees, 10)
+        } catch {
+            return
+        }
+
+        if (isZeroOrUndefined(pricePerMonth, servicesPerMonth, deposit)) return
+
+        this.#afterStateChangedCb = () => {}
+        this.#requiredFilledCb()
+    }
+
+
+    #setStateAndLog(state) {
+        this.state = state;
+        this.#afterStateChangedCb();
+        console.log('New property valuation section state: ', state);
+    }
+}
+
+export class DescriptionSectionManager {
+    description = ''
+    #minCharactersFilledCb = () => {}
+
+    constructor() {
+        const descriptionInputEl = document.getElementById('property-description-input')
+
+        throwIfUndefinedOrNullWithKeys({descriptionInputEl})
+
+        descriptionInputEl.addEventListener('input', () => {
+            this.description = descriptionInputEl.value
+            if (this.description.trim().length > 20) {
+                this.#minCharactersFilledCb()
+                this.#minCharactersFilledCb = () => {}
+            }
+        })
+    }
+
+
+    onMinimumCharactersFilled(cb) {
+        this.#minCharactersFilledCb = cb
+
+    }
+
+
+
+
 
 }

@@ -1,11 +1,13 @@
 import { initAddressSuggestionInput } from "./createListing/addressSuggestionInput"
 import { initMap } from "./createListing/map"
 import { REVERSE_GEO_URL } from "../serverEndpoints"
-import { ParametersSectionManager, SectionDisplayManager } from "./createListing/formStateManager"
+import { DescriptionSectionManager, ParametersSectionManager, PropertyValuationSectionManager, SectionDisplayManager } from "./createListing/formStateManager"
 
 
 const sectionDisplayManager = new SectionDisplayManager()
 const parametersSectionManager = new ParametersSectionManager()
+const propertyValuationSectionManager = new PropertyValuationSectionManager()
+const descriptionSectionManager = new DescriptionSectionManager()
 
 let listingState = {
     type: '', // offering or lookingFor,
@@ -31,31 +33,44 @@ const listingPropertyTypeEls = document.querySelectorAll('[data-listing-property
 listingTypeEls.forEach(el => {
     el.addEventListener('click', () => {
         const value = el.dataset['listingType']
-        updateStateAndPrint({...listingState, type: value})
+        updateStateAndPrint({ ...listingState, type: value })
     })
 })
 
 listingGoalEls.forEach(el => {
     el.addEventListener('click', () => {
         const value = el.dataset['listingGoal']
-        updateStateAndPrint({...listingState, goal: value})
+        updateStateAndPrint({ ...listingState, goal: value })
     })
 })
 
 listingIsOwnerEls.forEach(el => {
     el.addEventListener('click', () => {
         const value = el.dataset['listingIsOwner']
-        updateStateAndPrint({...listingState, ownerType: value})
+        updateStateAndPrint({ ...listingState, ownerType: value })
     })
 })
 
 listingPropertyTypeEls.forEach(el => {
     el.addEventListener('click', () => {
         const value = el.dataset['listingPropertyType']
-        updateStateAndPrint({...listingState, propertyType: value})
+        updateStateAndPrint({ ...listingState, propertyType: value })
 
         sectionDisplayManager.showSection("address")
     })
+})
+
+parametersSectionManager.onRequiredIsFilled(() => {
+    sectionDisplayManager.showSection('media')
+    sectionDisplayManager.showSection('video')
+})
+
+propertyValuationSectionManager.onRequiredIsFilled(() => {
+    sectionDisplayManager.showSection('description')
+})
+
+descriptionSectionManager.onMinimumCharactersFilled(() => {
+    sectionDisplayManager.showSection('contacts')
 })
 
 const autoSuggestion = initAddressSuggestionInput();
@@ -64,8 +79,8 @@ let isInReverseGeoProcess = false
 
 
 const map = initMap(async (e, setMapMarker) => {
-    const {lat, lng} = e.latlng;
-    
+    const { lat, lng } = e.latlng;
+
     if (isInReverseGeoProcess) {
         return
     }
@@ -93,7 +108,7 @@ autoSuggestion.onSuggestionSelected(async (suggestion) => {
     if (placeRank > 25) {
         zoom = 19
     }
-    
+
 
     map.setMapView(suggestion.lat, suggestion.lon, zoom)
 })
@@ -103,7 +118,6 @@ export function getMap() {
 }
 
 export function handleAddressContinueBtnClicked() {
-    sectionDisplayManager.showSection('media')
     sectionDisplayManager.showSection('parameters')
 }
 
