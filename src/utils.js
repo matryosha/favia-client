@@ -8,10 +8,6 @@ export function debounce(callback, wait) {
     };
 }
 
-export function throwIfUndefinedOrNull(...values) {
-    values.forEach(v => { if (v === undefined || v === null) throw Error('Some values were undefined or null') })
-}
-
 export function throwIfUndefinedOrNullWithKeys(obj) {
     const errorsKeys = []
 

@@ -1,4 +1,4 @@
-import { throwIfUndefinedOrNull, throwIfUndefinedOrNullWithKeys } from "../../utils"
+import { throwIfUndefinedOrNullWithKeys } from "../../utils"
 
 export class SectionDisplayManager {
     sectionEls = null
@@ -86,7 +86,20 @@ export class ParametersSectionManager {
         const floorNumberInputEl = id('fs-inputcounter-1-input')
         const floorTotalNumberInputEl = id('fs-inputcounter-2-input')
 
-        throwIfUndefinedOrNull(totalAreaInputEl, petsTglEl, obstacleFreeTglEl, smokingTglEl, parkingTglEl, flatTypeInputEl, energyClassInputEl, furnitureInputEl, longTermRadioEl, shortTermRadioEl, floorNumberInputEl, floorTotalNumberInputEl)
+        throwIfUndefinedOrNullWithKeys({
+            totalAreaInputEl,
+            petsTglEl,
+            obstacleFreeTglEl,
+            smokingTglEl,
+            parkingTglEl,
+            flatTypeInputEl,
+            energyClassInputEl,
+            furnitureInputEl,
+            longTermRadioEl,
+            shortTermRadioEl,
+            floorNumberInputEl,
+            floorTotalNumberInputEl
+        })
 
         this.state = {
             ...this.state,
@@ -188,7 +201,7 @@ export class PropertyValuationSectionManager {
         const depositInputEl = id('Deposit')
         const additionalFeesInputEl = id('Additional-fees')
 
-        throwIfUndefinedOrNull(pricePerMonthInputEl, servicesPerMonthInputEl, depositInputEl, additionalFeesInputEl)
+        throwIfUndefinedOrNullWithKeys({pricePerMonthInputEl, servicesPerMonthInputEl, depositInputEl, additionalFeesInputEl})
 
         pricePerMonthInputEl.addEventListener('input', () => {
             this.#setStateAndLog({...this.state, pricePerMonth: pricePerMonthInputEl.value})
