@@ -141,7 +141,7 @@ export class GoalSectionStateManager {
                 if (this.state.type === 'offering') {
                     this.#showSection(this.#yourGoalIsSectionEl)
                 } else {
-                    this.#showSection(this.#areYouOwnerSectionEl)
+                    this.#showSection(this.#propertyTypeSectionEl)
                 }
             })
         })
@@ -154,13 +154,15 @@ export class GoalSectionStateManager {
                     this.#propertyTypeSectionEl
                 ])
 
-                this.#showSection(this.#propertyTypeSectionEl)
+                this.#showSection(this.#areYouOwnerSectionEl)
             })
         })
         this.#ownerTypeEls.forEach(el => {
             el.addEventListener('click', () => {
                 const value = el.dataset['listingIsOwner']
                 this.updateStateAndPrint({ ...this.state, ownerType: value })
+
+                this.#showSection(this.#propertyTypeSectionEl)
             })
         })
         this.#propertyTypeEls.forEach(el => {
