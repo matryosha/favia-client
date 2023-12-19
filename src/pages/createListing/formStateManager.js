@@ -45,8 +45,158 @@ export class SectionDisplayManager {
     }
 }
 
-class GoalSectionStateManager {
-    //
+export class GoalSectionStateManager {
+    state = {
+        type: '', // offering or lookingFor,
+        goal: '', // rent or sell,
+        ownerType: '', // owner or agent or tenant,
+        propertyType: '', // flat, room, house or office,
+    }
+
+    #youAreEls = null
+    #goalEls = null
+    #ownerTypeEls = null
+    #propertyTypeEls = null
+
+    #youAreSectionEl = null
+    #yourGoalIsSectionEl = null
+    #areYouOwnerSectionEl = null
+    #propertyTypeSectionEl = null
+
+    #onPropertyCardClickedCb = () => {}
+
+
+    constructor() {
+        function id(id) {
+            return document.getElementById(id)
+        }
+
+        const offeringCardEl = id('offering-card')
+        const lookingForCardEl = id('looking-for-card')
+
+        const toRentCardEl = id('to-rent-card')
+        const toSellCardEl = id('to-sell-card')
+
+        const iAmOwnerCardEl = id('i-am-owner-card')
+        const iAmAgentCardEl = id('i-am-agent-card')
+        const iAmTenantCardEl = id('i-am-tenant-card')
+
+        const propertyFlatCardEL = id('property-flat-card')
+        const propertyRoomCardEL = id('property-room-card')
+        const propertyHouseCardEL = id('property-house-card')
+        const propertyOfficeCardEL = id('property-office-card')
+        const propertyGarageCardEL = id('property-garage-card')
+
+        this.#youAreSectionEl = id('you-are-card-section')
+        this.#yourGoalIsSectionEl = id('your-goal-is-card-section')
+        this.#areYouOwnerSectionEl = id('are-you-owner-card-section')
+        this.#propertyTypeSectionEl = id('property-type-card-section')
+
+        const sectionEls = {
+            youAre: this.#youAreSectionEl,
+            goal: this.#yourGoalIsSectionEl,
+            areYouOwner: this.#areYouOwnerSectionEl,
+            propertyType: this.#propertyTypeSectionEl
+        }
+
+        throwIfUndefinedOrNullWithKeys({
+            offeringCardEl,
+            lookingForCardEl,
+
+            toRentCardEl,
+            toSellCardEl,
+
+            iAmAgentCardEl,
+            iAmAgentCardEl,
+            iAmTenantCardEl,
+
+            propertyFlatCardEL,
+            propertyRoomCardEL,
+            propertyHouseCardEL,
+            propertyOfficeCardEL,
+            propertyGarageCardEL,
+
+            youAreCardSectionEl: this.#youAreSectionEl,
+            yourGoalIsCardSectionEl: this.#yourGoalIsSectionEl,
+            areYouOwnerCardSectionEl: this.#areYouOwnerSectionEl,
+            propertyTypeCardSectionEl: this.#propertyTypeSectionEl
+        })
+
+        this.#youAreEls = [offeringCardEl, lookingForCardEl]
+        this.#goalEls = [toRentCardEl, toSellCardEl]
+        this.#ownerTypeEls = [iAmOwnerCardEl, iAmAgentCardEl, iAmTenantCardEl]
+        this.#propertyTypeEls = [propertyFlatCardEL, propertyRoomCardEL, propertyHouseCardEL, propertyOfficeCardEL, propertyGarageCardEL]
+
+        this.#youAreEls.forEach(el => {
+            el.addEventListener('click', () => {
+                const value = el.dataset['listingType']
+                this.updateStateAndPrint({ ...this.state, type: value })
+
+                this.#hideSections([
+                    this.#yourGoalIsSectionEl,
+                    this.#areYouOwnerSectionEl,
+                    this.#propertyTypeSectionEl
+                ])
+
+                if (this.state.type === 'offering') {
+                    this.#showSection(this.#yourGoalIsSectionEl)
+                } else {
+                    this.#showSection(this.#areYouOwnerSectionEl)
+                }
+            })
+        })
+        this.#goalEls.forEach(el => {
+            el.addEventListener('click', () => {
+                const value = el.dataset['listingGoal']
+                this.updateStateAndPrint({ ...this.state, goal: value })
+
+                this.#hideSections([
+                    this.#propertyTypeSectionEl
+                ])
+
+                this.#showSection(this.#propertyTypeSectionEl)
+            })
+        })
+        this.#ownerTypeEls.forEach(el => {
+            el.addEventListener('click', () => {
+                const value = el.dataset['listingIsOwner']
+                this.updateStateAndPrint({ ...this.state, ownerType: value })
+            })
+        })
+        this.#propertyTypeEls.forEach(el => {
+            el.addEventListener('click', () => {
+                const value = el.dataset['listingPropertyType']
+                this.updateStateAndPrint({ ...this.state, propertyType: value })
+
+                this.#onPropertyCardClickedCb()
+            })
+        })
+
+        
+        offeringCardEl.addEventListener('click', () => {
+
+        })
+    }
+
+    onPropertyTypeCardClick(cb) {
+        this.#onPropertyCardClickedCb = cb
+    }
+
+    #hideSections(sectionsEls) {
+        sectionsEls.forEach(el => {
+            // todo: d-none used twice in code. Move from designer or create constant
+            el.classList.add('d-none')
+        })
+    }
+
+    #showSection(sectionEl) {
+        sectionEl.classList.add('d-none')
+    }
+
+    updateStateAndPrint(newListingState) {
+        this.state = newListingState
+        console.log('new listing state: ', this.state)
+    }
 
 }
 
