@@ -122,6 +122,8 @@ export class GoalSectionStateManager {
             propertyTypeCardSectionEl: this.#propertyTypeSectionEl
         })
 
+        this.#hideSections([sectionEls.goal, sectionEls.areYouOwner, sectionEls.propertyType])
+
         this.#youAreEls = [offeringCardEl, lookingForCardEl]
         this.#goalEls = [toRentCardEl, toSellCardEl]
         this.#ownerTypeEls = [iAmOwnerCardEl, iAmAgentCardEl, iAmTenantCardEl]
