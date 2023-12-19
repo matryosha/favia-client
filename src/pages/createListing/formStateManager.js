@@ -348,8 +348,8 @@ export class PropertyValuationSectionManager {
             return document.getElementById(id)
         }
 
-        const pricePerMonthInputEl = id('price-per-month-input')
-        const servicesPerMonthInputEl = id('services-per-month-input')
+        const pricePerMonthInputEl = id('Price-per-month')
+        const servicesPerMonthInputEl = id('Services-per-month')
         const depositInputEl = id('Deposit')
         const additionalFeesInputEl = id('Additional-fees')
 
