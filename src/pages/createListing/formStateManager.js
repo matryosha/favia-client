@@ -192,7 +192,7 @@ export class GoalSectionStateManager {
     }
 
     #showSection(sectionEl) {
-        sectionEl.classList.add('d-none')
+        sectionEl.classList.remove('d-none')
     }
 
     updateStateAndPrint(newListingState) {
