@@ -48,7 +48,7 @@ export class SectionDisplayManager {
 export class GoalSectionStateManager {
     state = {
         type: '', // offering or lookingFor,
-        goal: '', // rent or sell,
+        goal: '', // rent or sell or buy,
         ownerType: '', // owner or agent or tenant,
         propertyType: '', // flat, room, house or office,
     }
@@ -76,6 +76,7 @@ export class GoalSectionStateManager {
 
         const toRentCardEl = id('to-rent-card')
         const toSellCardEl = id('to-sell-card')
+        const toBuyCardEl = id('to-buy-card')
 
         const iAmOwnerCardEl = id('i-am-owner-card')
         const iAmAgentCardEl = id('i-am-agent-card')
@@ -105,6 +106,7 @@ export class GoalSectionStateManager {
 
             toRentCardEl,
             toSellCardEl,
+            toBuyCardEl,
 
             iAmAgentCardEl,
             iAmAgentCardEl,
@@ -125,7 +127,7 @@ export class GoalSectionStateManager {
         this.#hideSections([sectionEls.goal, sectionEls.areYouOwner, sectionEls.propertyType])
 
         this.#youAreEls = [offeringCardEl, lookingForCardEl]
-        this.#goalEls = [toRentCardEl, toSellCardEl]
+        this.#goalEls = [toRentCardEl, toSellCardEl, toBuyCardEl]
         this.#ownerTypeEls = [iAmOwnerCardEl, iAmAgentCardEl, iAmTenantCardEl]
         this.#propertyTypeEls = [propertyFlatCardEL, propertyRoomCardEL, propertyHouseCardEL, propertyOfficeCardEL, propertyGarageCardEL]
 
