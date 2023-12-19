@@ -14,6 +14,17 @@ export class SectionDisplayManager {
             description: document.getElementById('description-section'),
             contacts: document.getElementById('contacts-section')
         }
+
+        throwIfUndefinedOrNullWithKeys({
+            goalSection: this.sectionEls.goal,
+            addressSection: this.sectionEls.address,
+            parametersSection: this.sectionEls.parameters,
+            mediaSection: this.sectionEls.media,
+            videoSection: this.sectionEls.video,
+            valuationSection: this.sectionEls.valuation,
+            descriptionSection: this.sectionEls.description,
+            contactsSection: this.sectionEls.contacts
+        })
     }
 
     showSection(sectionName) {
