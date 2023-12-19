@@ -190,13 +190,27 @@ export class GoalSectionStateManager {
 
     #hideSections(sectionsEls) {
         sectionsEls.forEach(el => {
-            // todo: d-none used twice in code. Move from designer or create constant
-            el.classList.add('d-none')
+            this.#hideEl(el)
         })
     }
 
+    // todo use base method show/hide el
+    #showAllCardsInSection(sectionEls) {
+        sectionEls.forEach(cardEl => this.#showEl(cardEl))
+    }
+
+    // todo to base method show/hide el
     #showSection(sectionEl) {
-        sectionEl.classList.remove('d-none')
+        this.#showEl(sectionEl)
+    }
+
+    // todo: d-none used twice in code. Move from designer or create constant
+    #hideEl(el) {
+        el.classList.add('d-none')
+    }
+
+    #showEl(el) {
+        el.classList.remove('d-none')
     }
 
     updateStateAndPrint(newListingState) {
