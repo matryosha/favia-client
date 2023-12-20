@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const webpack = require('webpack')
 
 const pages = fs.readdirSync('./src/pages')
                 .reduce((acc, v) => ({ ...acc, [v.replace('.js', '')]: { 
@@ -11,7 +12,10 @@ const pages = fs.readdirSync('./src/pages')
                 }}), {});
 
 module.exports = {
-    // mode: "development",
+    devtool: false,
+    plugins: [new webpack.SourceMapDevToolPlugin({
+        exclude: ['alpine.js']
+    })],  
     entry: {...pages, index: { 
         import: './src/index.js',
         library: {
@@ -29,10 +33,30 @@ module.exports = {
     },
     optimization: {
         runtimeChunk: "single",
+        removeEmptyChunks: false,
         splitChunks: {
-            chunks: 'all',
-            minSize: 0,
-            name: 'commons'
+            cacheGroups: {
+                alpinejs: {
+                    minSize: 0,
+                    chunks: 'all',
+                    test: /[\\/]node_modules[\\/]alpinejs/,
+                    
+                    name() {
+                        return 'alpine'
+                    }
+                  },
+
+                  commons: {
+                    name: 'commons',
+                    minSize: 0,
+                    chunks: 'all',
+                    test: /[\\/]node_modules[\\/]/,
+                    priority: -10,
+                    reuseExistingChunk: true,
+                  },
+            }
         },
+
+        
     },
 };
