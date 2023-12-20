@@ -22,7 +22,7 @@ module.exports = {
 
     }},
     output: {
-        filename: '[name].[hash].js',
+        filename: '[name].js',
         path: path.resolve(__dirname, 'dist'),
         // chunkLoading: 'import', 
         chunkFormat: 'array-push'
