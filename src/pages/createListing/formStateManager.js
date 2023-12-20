@@ -141,12 +141,15 @@ export class GoalSectionStateManager {
                     this.#areYouOwnerSectionEl,
                     this.#propertyTypeSectionEl
                 ])
+                this.#showAllCardsInSection(this.#goalEls)
 
                 if (this.state.type === 'offering') {
-                    this.#showSection(this.#yourGoalIsSectionEl)
+                    this.#hideEl(toBuyCardEl)
                 } else {
-                    this.#showSection(this.#propertyTypeSectionEl)
+                    this.#hideEl(toSellCardEl)
                 }
+
+                this.#showSection(this.#yourGoalIsSectionEl)
             })
         })
         this.#goalEls.forEach(el => {
@@ -158,7 +161,17 @@ export class GoalSectionStateManager {
                     this.#propertyTypeSectionEl
                 ])
 
-                this.#showSection(this.#areYouOwnerSectionEl)
+                this.#showAllCardsInSection(this.#propertyTypeEls)
+
+                if (value !== 'rent') {
+                    this.#hideEl(propertyRoomCardEL)
+                }
+
+                if (this.state.type === 'lookingFor') {
+                    this.#showSection(this.#propertyTypeSectionEl)
+                } else {
+                    this.#showSection(this.#areYouOwnerSectionEl)
+                }
             })
         })
         this.#ownerTypeEls.forEach(el => {
