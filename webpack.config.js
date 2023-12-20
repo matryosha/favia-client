@@ -14,7 +14,7 @@ const pages = fs.readdirSync('./src/pages')
 module.exports = {
     devtool: false,
     plugins: [new webpack.SourceMapDevToolPlugin({
-        exclude: ['alpine.js']
+        exclude: ['alpine.js', 'runtime.js']
     })],  
     entry: {...pages, index: { 
         import: './src/index.js',
