@@ -65,6 +65,11 @@ export class GoalSectionStateManager {
 
     #onPropertyCardClickedCb = () => {}
 
+    #cardBlockActiveClassName = 'card-block-active'
+    #cardBlockInactiveClassName = 'card-block-inactive'
+
+    #sectionElToSectionCardsEl = {}
+
 
     constructor() {
         function id(id) {
@@ -131,6 +136,13 @@ export class GoalSectionStateManager {
         this.#ownerTypeEls = [iAmOwnerCardEl, iAmAgentCardEl, iAmTenantCardEl]
         this.#propertyTypeEls = [propertyFlatCardEL, propertyRoomCardEL, propertyHouseCardEL, propertyOfficeCardEL, propertyGarageCardEL]
 
+        this.#sectionElToSectionCardsEl = {
+            [this.#youAreSectionEl.id]: this.#youAreEls,
+            [this.#yourGoalIsSectionEl.id]: this.#goalEls,
+            [this.#areYouOwnerSectionEl.id]: this.#ownerTypeEls,
+            [this.#propertyTypeSectionEl.id]: this.#propertyTypeEls,
+        }
+
         this.#youAreEls.forEach(el => {
             el.addEventListener('click', () => {
                 const value = el.dataset['listingType']
@@ -150,6 +162,8 @@ export class GoalSectionStateManager {
                 }
 
                 this.#showSection(this.#yourGoalIsSectionEl)
+
+                this.#setCardsActiveState(el, this.#youAreEls)
             })
         })
         this.#goalEls.forEach(el => {
@@ -172,6 +186,8 @@ export class GoalSectionStateManager {
                 } else {
                     this.#showSection(this.#areYouOwnerSectionEl)
                 }
+
+                this.#setCardsActiveState(el, this.#goalEls)
             })
         })
         this.#ownerTypeEls.forEach(el => {
@@ -180,6 +196,8 @@ export class GoalSectionStateManager {
                 this.updateStateAndPrint({ ...this.state, ownerType: value })
 
                 this.#showSection(this.#propertyTypeSectionEl)
+
+                this.#setCardsActiveState(el, this.#ownerTypeEls)
             })
         })
         this.#propertyTypeEls.forEach(el => {
@@ -188,17 +206,26 @@ export class GoalSectionStateManager {
                 this.updateStateAndPrint({ ...this.state, propertyType: value })
 
                 this.#onPropertyCardClickedCb()
+
+                this.#setCardsActiveState(el, this.#propertyTypeEls)
             })
         })
-
-        
         offeringCardEl.addEventListener('click', () => {
 
-        })
-    }
+        })}
 
     onPropertyTypeCardClick(cb) {
         this.#onPropertyCardClickedCb = cb
+    }
+
+    #setCardsActiveState(clickedOnCardEl, cardsSectionEl) {
+        cardsSectionEl.forEach(elToUpdate => {
+            if (elToUpdate !== clickedOnCardEl) {
+                elToUpdate.classList.add(this.#cardBlockInactiveClassName)
+            }
+        })
+        clickedOnCardEl.classList.remove(this.#cardBlockInactiveClassName)
+        clickedOnCardEl.classList.add(this.#cardBlockActiveClassName)
     }
 
     #hideSections(sectionsEls) {
@@ -207,13 +234,16 @@ export class GoalSectionStateManager {
         })
     }
 
-    // todo use base method show/hide el
     #showAllCardsInSection(sectionEls) {
         sectionEls.forEach(cardEl => this.#showEl(cardEl))
     }
 
-    // todo to base method show/hide el
     #showSection(sectionEl) {
+        const sectionCardsEl = this.#sectionElToSectionCardsEl[sectionEl.id]
+        sectionCardsEl.forEach(cardEl => {
+            cardEl.classList.remove(this.#cardBlockActiveClassName)
+            cardEl.classList.remove(this.#cardBlockInactiveClassName)
+        })
         this.#showEl(sectionEl)
     }
 
