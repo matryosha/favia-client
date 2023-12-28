@@ -18,7 +18,8 @@
   "license": "ISC",
   "devDependencies": {
     "webpack": "^5.89.0",
-    "webpack-cli": "^5.1.4"
+    "webpack-bundle-analyzer": "^4.10.1",
+    "webpack-cli": "^5.1.4",
   },
   "dependencies": {
     "alpinejs": "^3.13.3"
