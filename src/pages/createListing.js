@@ -2,6 +2,7 @@ import { initAddressSuggestionInput } from "./createListing/addressSuggestionInp
 import { initMap } from "./createListing/map"
 import { REVERSE_GEO_URL } from "../serverEndpoints"
 import { DescriptionSectionManager, GoalSectionStateManager, ParametersSectionManager, PropertyValuationSectionManager, SectionDisplayManager } from "./createListing/formStateManager"
+import './createListing/mediaUpload/'
 
 
 const sectionDisplayManager = new SectionDisplayManager()
