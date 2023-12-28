@@ -34,6 +34,7 @@ module.exports = {
     optimization: {
         runtimeChunk: "single",
         removeEmptyChunks: false,
+        minimize: false,
         splitChunks: {
             cacheGroups: {
                 alpinejs: {
@@ -46,14 +47,14 @@ module.exports = {
                     }
                   },
 
-                  commons: {
-                    name: 'commons',
-                    minSize: 0,
-                    chunks: 'all',
-                    test: /[\\/]node_modules[\\/]/,
-                    priority: -10,
-                    reuseExistingChunk: true,
-                  },
+                //   commons: {
+                //     name: 'commons',
+                //     minSize: 0,
+                //     chunks: 'all',
+                //     test: /[\\/]node_modules[\\/]/,
+                //     priority: -10,
+                //     reuseExistingChunk: true,
+                //   },
             }
         },
 
