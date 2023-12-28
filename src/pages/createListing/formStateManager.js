@@ -2,6 +2,7 @@ import { throwIfUndefinedOrNullWithKeys } from "../../utils"
 
 export class SectionDisplayManager {
     sectionEls = null
+    sectionOpenedCallbacks = {}
 
     constructor() {
         this.sectionEls = {
@@ -27,8 +28,28 @@ export class SectionDisplayManager {
         })
     }
 
+    onSectionOpened(sectionName, cb) {
+        if(! this.sectionEls[sectionName]) {
+            throw Error('Unknown section name')
+        }
+
+        let currentCbs = this.sectionOpenedCallbacks[sectionName]
+        if (currentCbs === undefined) {
+            currentCbs = []
+            this.sectionOpenedCallbacks[sectionName] = currentCbs
+        }
+        currentCbs.push(cb)
+    }
+
     showSection(sectionName) {
         this.#showEl(this.sectionEls[sectionName])
+        const sectionOpenedCbs = this.sectionOpenedCallbacks[sectionName];
+
+        if (sectionOpenedCbs?.forEach) {
+            sectionOpenedCbs.forEach(cb => {
+                requestIdleCallback(cb)
+            })
+        }
     }
 
     hideSection(sectionName) {
