@@ -12,7 +12,8 @@
     "push-github": "python scripts/push-github.py",
     "build": "rm -rf dist/.* dist/* ; npx webpack",
     "build-and-publish": "npm run build && npm run push-github && npm run generate-integrity && npm run create-basename-hashname-map && npm run upload-to-registry && npm run activate-site-scripts && npm run activate-pages-scripts && npm run publish-site",
-    "dev": "webpack-cli watch -c 'webpack.config.dev.js' --entry ./src/index.js"
+
+    "webpack-serve": "webpack serve"
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +21,7 @@
     "webpack": "^5.89.0",
     "webpack-bundle-analyzer": "^4.10.1",
     "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
     "alpinejs": "^3.13.3"
