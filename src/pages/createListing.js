@@ -79,3 +79,8 @@ export function handleAddressContinueBtnClicked() {
 export { sectionDisplayManager }
 
 document.getElementById('page-content').style.display = 'block';
+
+// timeout because webpack could not set pageModule in time
+setTimeout(() => {
+    dispatchEvent(new Event('pageModuleLoaded'))
+}, 50)
