@@ -31,6 +31,18 @@ module.exports = {
         // chunkLoading: 'import', 
         chunkFormat: 'array-push'
     },
+    module: {
+        rules: [
+            {
+                test: /\.html$/i,
+                loader: "html-loader",
+            },
+            {
+                test: /\.css$/i,
+                use: ["style-loader", "css-loader"],
+            },
+        ],
+    },
     optimization: {
         runtimeChunk: "single",
         removeEmptyChunks: false,
