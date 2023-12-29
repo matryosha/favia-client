@@ -4,7 +4,8 @@ const webpack = require('webpack')
 
 const pages = fs.readdirSync('./src/pages')
                 .reduce((acc, v) => ({ ...acc, [v.replace('.js', '')]: { 
-                    import: `./src/pages/${v}`,  
+                    import: `./src/pages/${v}`,
+                    filename: 'pages/[name].js',
                     library: {
                         name: ['Favia', 'pageModule'],
                         type: 'var'
