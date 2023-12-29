@@ -83,8 +83,20 @@ const overlayAlpineData = (imageIndex = 0) => ({
 })
 
 Alpine.data('imagePreviewOverlay', overlayAlpineData)
+Alpine.data('imagePreviewShadow', (imageIndex = 0) => ({
+    imageIndex: imageIndex,
 
-const imagePreviewElStyles = getComputedStyle(imagePreviewEls[0])
+    shadowBind: {
+        [':class']() {
+             if (this.getImageUrl(this.imageIndex) !== '') {
+                return 'slider-item-shadow-visible'
+             }
+
+             return ''
+        }
+    }
+}))
+
 for (let index = 0; index < imagePreviewEls.length; index++) {
     const previewEl = imagePreviewEls[index];
     const imageEl = previewEl.querySelector('img')
@@ -99,7 +111,8 @@ for (let index = 0; index < imagePreviewEls.length; index++) {
     // shadowEl.style['height'] = '100%imagePreviewOverlay'
     // shadowEl.style['position'] = 'absolute'
 
-    shadowEl.setAttribute('x-show', `getImageUrl(${index}) !== ''`)
+    shadowEl.setAttribute('x-data', `imagePreviewShadow(${index})`)
+    shadowEl.setAttribute('x-bind', 'shadowBind')
 
     const loadingOverlayEl = previewEl.querySelector('.slider-item-loading-overlay');
 
