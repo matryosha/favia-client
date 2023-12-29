@@ -53,8 +53,29 @@ const mediaSectionXData = () => ({
             if (fileIndex < 0) fileIndex = 0
             uploader.queueFile(file, () => this.imageLoadStatus[fileIndex] = true)
         }
+    },
+
+    onDropHandler(e) {
+        const items = e.dataTransfer.items;
+        if (! items) return
+
+        [...items].forEach(i => {
+            if (i.kind !== 'file') return
+            if (i.type !== 'image/jpeg') return
+
+            // todo: smells. duplicate from selectedFileUpdated
+            const file = i.getAsFile()
+            this.mediaFiles.push(file)
+            const url = URL.createObjectURL(file)
+            this.mediaFilesUrls.push(url)
+
+            let fileIndex = this.mediaFilesUrls.length - 1
+            if (fileIndex < 0) fileIndex = 0
+            uploader.queueFile(file, () => this.imageLoadStatus[fileIndex] = true)
+        })
     }
 })
+
 
 
 mediaUploadInputEl.setAttribute('x-on:change', 'selectedFileUpdated')
@@ -62,6 +83,8 @@ mediaUploadInputEl.setAttribute('x-on:change', 'selectedFileUpdated')
 // mediaHintEl.setAttribute('x-show', '! hasSomeFiles')
 
 mediaUploadImageEl.setAttribute('x-on:click', 'openFilePicker')
+mediaUploadImageEl.setAttribute('x-on:drop.prevent', 'onDropHandler')
+mediaUploadImageEl.setAttribute('x-on:dragover.prevent', '')
 
 // mediaMainImgEl.setAttribute('x-bind:src', 'getImageUrl(0)')
 
