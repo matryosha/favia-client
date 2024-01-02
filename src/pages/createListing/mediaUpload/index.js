@@ -142,6 +142,9 @@ for (let index = 0; index < imagePreviewEls.length; index++) {
     // loadingOverlayEl.setAttribute('x-show', `isImageLoaded(${index})`)
     loadingOverlayEl.setAttribute('x-data', `imagePreviewOverlay(${index})`)
     loadingOverlayEl.setAttribute('x-bind', 'overlayBind')
+
+    const controlsOverlayEl = previewEl.querySelector('.slider-item-controls-overlay-container')
+    controlsOverlayEl.setAttribute('x-show', `getImageUrl(${index}) !== ''`)
 }
 
 Alpine.start()
