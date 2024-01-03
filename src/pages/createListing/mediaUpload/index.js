@@ -1,17 +1,21 @@
 import Alpine from 'alpinejs'
 
 import hiddenInput from './hiddenInput.html'
+import mediaUploadOverlay from './media-upload-overlay.html'
+import './style.css'
 import { MediaUploader } from './uploader';
 
 const uploader = new MediaUploader()
 
 const mediaSection = document.getElementById('media-section')
 const mediaUploadImageEl = document.getElementById('image-drop-area')
+mediaUploadImageEl.classList.add('media-dnd-active')
 // const mediaHintEl = mediaSection.getElementsByClassName('drag-area-icon')[0]
 const mediaMainImgEl = mediaSection.getElementsByTagName('img')[0]
 const imagePreviewEls = document.querySelectorAll('.slider-items-container .slider-item')
 
 mediaSection.insertAdjacentHTML('beforeend', hiddenInput)
+mediaSection.insertAdjacentHTML('beforeend', mediaUploadOverlay)
 const mediaUploadInputEl = document.getElementById('media-upload-input')
 
 
@@ -19,6 +23,8 @@ const mediaSectionXData = () => ({
     mediaFiles: [],
     mediaFilesUrls: [],
     imageLoadStatus: {},
+    mediaElRelativeClassRemoveTimeout: null,
+    isMediaDragActive: false,
 
     get hasSomeFiles() {
         return this.mediaFiles.length !== 0
@@ -57,6 +63,8 @@ const mediaSectionXData = () => ({
 
     onDropHandler(e) {
         const items = e.dataTransfer.items;
+        this.onMediaDragEnd()
+
         if (! items) return
 
         [...items].forEach(i => {
@@ -73,6 +81,24 @@ const mediaSectionXData = () => ({
             if (fileIndex < 0) fileIndex = 0
             uploader.queueFile(file, () => this.imageLoadStatus[fileIndex] = true)
         })
+    },
+
+    onMediaDragOver() {
+        if (this.isMediaDragActive === true) return
+        this.isMediaDragActive = true;
+
+        mediaUploadImageEl.classList.add('media-dnd-active')
+    },
+
+    onMediaDragEnd() {
+        clearTimeout(this.mediaElRelativeClassRemoveTimeout)
+        // without timeout media el becomes jittery
+        this.mediaElRelativeClassRemoveTimeout = setTimeout(() => {
+            if (this.isMediaDragActive) return;
+            mediaUploadImageEl.classList.remove('media-dnd-active')
+        }, 700)
+
+        this.isMediaDragActive = false
     }
 })
 
@@ -84,7 +110,8 @@ mediaUploadInputEl.setAttribute('x-on:change', 'selectedFileUpdated')
 
 mediaUploadImageEl.setAttribute('x-on:click', 'openFilePicker')
 mediaUploadImageEl.setAttribute('x-on:drop.prevent', 'onDropHandler')
-mediaUploadImageEl.setAttribute('x-on:dragover.prevent', '')
+mediaUploadImageEl.setAttribute('x-on:dragover.prevent', 'onMediaDragOver')
+mediaUploadImageEl.setAttribute('x-on:dragleave.prevent', 'onMediaDragEnd')
 
 // mediaMainImgEl.setAttribute('x-bind:src', 'getImageUrl(0)')
 
