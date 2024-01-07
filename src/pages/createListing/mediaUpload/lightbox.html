@@ -1,0 +1,25 @@
+<template x-teleport="body">
+    <div x-data="mediaLightbox" @click.self="isLightboxOpened = false" id="media-upload-lightbox" :class="isLightboxOpened ? 'active' : ''">
+        <div class="media-upload-lightbox__main-image-container">
+            <img :src="getImageUrl(currentActiveLightboxImageIndex)" alt="image-in-lightbox">
+        </div>
+
+        <div class="media-upload-lightbox__navigation-controls-container">
+            <button @click="handlePrevBtnClick()"> ⬅️ </button>
+            <button @click="handleNextBtnClick()"> ➡️ </button>
+        </div>
+
+        <div class="media-upload-lightbox__close-control-container">
+            <button @click="isLightboxOpened = false">✖</button>
+        </div>
+
+        <div class="media-upload-lightbox__manage-control-container">
+            <button>
+                ⭐
+            </button>
+            <button>
+                🗑️
+            </button>
+        </div>
+    </div>
+</template>

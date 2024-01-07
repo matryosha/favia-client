@@ -2,6 +2,7 @@ import Alpine from 'alpinejs'
 
 import hiddenInput from './hiddenInput.html'
 import mediaUploadOverlay from './media-upload-overlay.html'
+import mediaLightbox from './lightbox.html'
 import './style.css'
 import { MediaUploader } from './uploader';
 
@@ -16,6 +17,7 @@ const imagePreviewEls = document.querySelectorAll('.slider-items-container .slid
 
 mediaSection.insertAdjacentHTML('beforeend', hiddenInput)
 mediaSection.insertAdjacentHTML('beforeend', mediaUploadOverlay)
+mediaSection.insertAdjacentHTML('beforeend', mediaLightbox)
 const mediaUploadInputEl = document.getElementById('media-upload-input')
 
 
@@ -25,6 +27,10 @@ const mediaSectionXData = () => ({
     imageLoadStatus: {},
     mediaElRelativeClassRemoveTimeout: null,
     isMediaDragActive: false,
+
+    currentActiveLightboxImageIndex: null,
+    // separate prop to fix flickery
+    isLightboxOpened: false,
 
     get hasSomeFiles() {
         return this.mediaFiles.length !== 0
@@ -99,7 +105,33 @@ const mediaSectionXData = () => ({
         }, 700)
 
         this.isMediaDragActive = false
+    },
+
+    handleOnImagePreviewClick(index) {
+        if (! this.getImageUrl(index)) return;
+        this.currentActiveLightboxImageIndex = index
+        this.isLightboxOpened = true
     }
+})
+const lightBoxXData = () => ({
+    handlePrevBtnClick() {
+        if (this.currentActiveLightboxImageIndex === 0) {
+            this.currentActiveLightboxImageIndex = this.mediaFiles.length - 1
+            return
+        }
+
+        this.currentActiveLightboxImageIndex--
+    },
+
+    handleNextBtnClick() {
+        if (this.currentActiveLightboxImageIndex === this.mediaFiles.length - 1) {
+            this.currentActiveLightboxImageIndex = 0
+            return
+        }
+
+        this.currentActiveLightboxImageIndex++
+    }
+
 })
 
 
@@ -116,6 +148,7 @@ mediaUploadImageEl.setAttribute('x-on:dragleave.prevent', 'onMediaDragEnd')
 // mediaMainImgEl.setAttribute('x-bind:src', 'getImageUrl(0)')
 
 Alpine.data('media', mediaSectionXData)
+Alpine.data('mediaLightbox', lightBoxXData)
 mediaSection.setAttribute('x-data', 'media')
 
 const overlayAlpineData = (imageIndex = 0) => ({
@@ -149,6 +182,8 @@ Alpine.data('imagePreviewShadow', (imageIndex = 0) => ({
 
 for (let index = 0; index < imagePreviewEls.length; index++) {
     const previewEl = imagePreviewEls[index];
+    previewEl.setAttribute('x-on:click', `handleOnImagePreviewClick(${index})`)
+
     const imageEl = previewEl.querySelector('img')
     imageEl.setAttribute('x-bind:src', `getImageUrl(${index})`)
     imageEl.setAttribute('x-show', `getImageUrl(${index}) !== ''`)
