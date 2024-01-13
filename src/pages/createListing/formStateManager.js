@@ -67,32 +67,75 @@ export class SectionDisplayManager {
 }
 
 export class GoalSectionStateManager {
+    /**
+     * Current state in goal section
+     * @typedef {Object} GoalSectionState
+     * @property {'offering' | 'lookingFor' | ''} type
+     * @property {'rent' | 'sell' | 'buy' | ''} goal
+     * @property {'owner' | 'agent' | 'tenant' | ''} ownerType
+     * @property {'flat' | 'room' | 'house' | 'office' | ''} propertyType
+     */
+
+    /**
+     * @type {GoalSectionState}
+     */
     state = {
-        type: '', // offering or lookingFor,
-        goal: '', // rent or sell or buy,
-        ownerType: '', // owner or agent or tenant,
-        propertyType: '', // flat, room, house or office,
+        type: '',
+        goal: '',
+        ownerType: '',
+        propertyType: '',
     }
 
-    #youAreEls = null
-    #goalEls = null
-    #ownerTypeEls = null
-    #propertyTypeEls = null
+    /**
+     * @type {HTMLElement[]}
+     */
+    #youAreEls
+    /**
+     * @type {HTMLElement[]}
+     */
+    #goalEls
+    /**
+     * @type {HTMLElement[]}
+     */
+    #ownerTypeEls
+    /**
+     * @type {HTMLElement[]}
+     */
+    #propertyTypeEls
 
-    #youAreSectionEl = null
-    #yourGoalIsSectionEl = null
-    #areYouOwnerSectionEl = null
-    #propertyTypeSectionEl = null
+    /**
+     * @type {HTMLElement}
+     */
+    #youAreSectionEl
+    /**
+     * @type {HTMLElement}
+     */
+    #yourGoalIsSectionEl
+    /**
+     * @type {HTMLElement}
+     */
+    #areYouOwnerSectionEl
+    /**
+     * @type {HTMLElement}
+     */
+    #propertyTypeSectionEl
 
     #onPropertyCardClickedCb = () => {}
 
     #cardBlockActiveClassName = 'card-block-active'
     #cardBlockInactiveClassName = 'card-block-inactive'
 
-    #sectionElToSectionCardsEl = {}
+    /**
+     * @type {Object.<string, HTMLElement>}
+     */
+    #sectionElToSectionCardsEl
 
 
     constructor() {
+        /**
+         * @param id
+         * @returns {HTMLElement}
+         */
         function id(id) {
             return document.getElementById(id)
         }
@@ -234,10 +277,17 @@ export class GoalSectionStateManager {
 
         })}
 
+    /**
+     * @param {function} cb
+     */
     onPropertyTypeCardClick(cb) {
         this.#onPropertyCardClickedCb = cb
     }
 
+    /**
+     * @param {HTMLElement} clickedOnCardEl
+     * @param {HTMLElement[]} cardsSectionEl
+     */
     #setCardsActiveState(clickedOnCardEl, cardsSectionEl) {
         cardsSectionEl.forEach(elToUpdate => {
             if (elToUpdate !== clickedOnCardEl) {
@@ -248,16 +298,26 @@ export class GoalSectionStateManager {
         clickedOnCardEl.classList.add(this.#cardBlockActiveClassName)
     }
 
+    /**
+     *
+     * @param {HTMLElement[]} sectionsEls
+     */
     #hideSections(sectionsEls) {
         sectionsEls.forEach(el => {
             this.#hideEl(el)
         })
     }
 
+    /**
+     * @param {HTMLElement[]} sectionEls
+     */
     #showAllCardsInSection(sectionEls) {
         sectionEls.forEach(cardEl => this.#showEl(cardEl))
     }
 
+    /**
+     * @param {HTMLElement} sectionEl
+     */
     #showSection(sectionEl) {
         const sectionCardsEl = this.#sectionElToSectionCardsEl[sectionEl.id]
         sectionCardsEl.forEach(cardEl => {
@@ -268,14 +328,23 @@ export class GoalSectionStateManager {
     }
 
     // todo: d-none used twice in code. Move from designer or create constant
+    /**
+     * @param {HTMLElement} el
+     */
     #hideEl(el) {
         el.classList.add('d-none')
     }
 
+    /**
+     * @param {HTMLElement} el
+     */
     #showEl(el) {
         el.classList.remove('d-none')
     }
 
+    /**
+     * @param {GoalSectionState} newListingState
+     */
     updateStateAndPrint(newListingState) {
         this.state = newListingState
         console.log('new listing state: ', this.state)
