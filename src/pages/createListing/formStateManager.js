@@ -135,7 +135,6 @@ export class GoalSectionStateManager {
             toBuyCardEl,
 
             iAmAgentCardEl,
-            iAmAgentCardEl,
             iAmTenantCardEl,
 
             propertyFlatCardEL,
