@@ -1,5 +1,5 @@
-import { dep } from "./main";
-import authClient, {isAuthenticated} from "./authClient";
+import { dep } from "main";
+import authClient, {isAuthenticated} from "authClient";
 
 authClient.init()
 console.log("New auth status: ", authClient.isAuthenticated ? "Logged in" : "Anonymous")

@@ -1,8 +1,13 @@
+import { REVERSE_GEO_URL } from "serverEndpoints"
 import { initAddressSuggestionInput } from "./createListing/addressSuggestionInput"
 import { initMap } from "./createListing/map"
-import { REVERSE_GEO_URL } from "../serverEndpoints"
-import { DescriptionSectionManager, GoalSectionStateManager, ParametersSectionManager, PropertyValuationSectionManager, SectionDisplayManager } from "./createListing/formStateManager"
 import './createListing/mediaUpload/'
+import { 
+    DescriptionSectionManager, 
+    GoalSectionStateManager, 
+    ParametersSectionManager, 
+    PropertyValuationSectionManager, 
+    SectionDisplayManager } from "./createListing/formStateManager"
 
 
 const sectionDisplayManager = new SectionDisplayManager()

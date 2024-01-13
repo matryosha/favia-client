@@ -1,4 +1,4 @@
-import { throwIfUndefinedOrNullWithKeys } from "../../utils"
+import { throwIfUndefinedOrNullWithKeys } from "utils"
 
 export class SectionDisplayManager {
     sectionEls = null

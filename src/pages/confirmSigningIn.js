@@ -1,4 +1,4 @@
-import authClient from "../authClient";
+import authClient from "authClient";
 
 console.log(authClient);
 

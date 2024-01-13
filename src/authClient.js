@@ -1,4 +1,4 @@
-import { SERVER_URL as serverUrl } from './serverEndpoints'
+import { SERVER_URL as serverUrl } from 'serverEndpoints'
 
 
 class AuthClient {

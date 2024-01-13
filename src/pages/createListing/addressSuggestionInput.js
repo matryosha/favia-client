@@ -1,5 +1,5 @@
-import { GEODECODE_URL } from "../../serverEndpoints";
-import { debounce } from "../../utils";
+import { GEODECODE_URL } from "serverEndpoints";
+import { debounce } from "utils";
 import './addressSuggestionInput.css'
 
 

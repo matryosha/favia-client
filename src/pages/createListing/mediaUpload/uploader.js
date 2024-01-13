@@ -1,4 +1,4 @@
-import { UPLOAD_MEDIA_URL } from "../../../serverEndpoints";
+import { UPLOAD_MEDIA_URL } from "serverEndpoints";
 
 export class MediaUploader {
     isUploadingNow = false
