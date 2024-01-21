@@ -403,11 +403,20 @@ export class ParametersSectionManager {
             floorTotalNumberInputEl
         })
 
+        let currentRentType;
+        if (longTermRadioEl.querySelector('input').checked) {
+            currentRentType = 'long'
+        } else if (shortTermRadioEl.querySelector('input').checked) {
+            currentRentType = 'short'
+        }
+
         this.state = {
             ...this.state,
+            totalArea: totalAreaInputEl.value,
             flatType: flatTypeInputEl.value,
             energyClass: energyClassInputEl.value,
-            furniture: furnitureInputEl.value
+            furniture: furnitureInputEl.value,
+            rentTermType: currentRentType,
         }
 
         totalAreaInputEl.addEventListener('input', () => {
