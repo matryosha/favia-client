@@ -591,11 +591,42 @@ export class DescriptionSectionManager {
 
     onMinimumCharactersFilled(cb) {
         this.#minCharactersFilledCb = cb
+    }
+}
 
+export class ContactsSectionManager {
+    state = {
+        name: '',
+        surname: '',
+        phoneNumber: '',
+        email: ''
     }
 
+    constructor() {
+        const nameInput = document.getElementById('Name')
+        const surnameInput = document.getElementById('Surname')
+        const phoneNumberInput = document.getElementById('Phone-number')
+        const emailInput = document.getElementById('E-mail')
 
+        throwIfUndefinedOrNullWithKeys({
+            nameInput,
+            surnameInput,
+            phoneNumberInput,
+            emailInput
+        })
 
-
-
+        nameInput.addEventListener('input', () => {
+            // GC goes wrrrrr or hello react
+            this.state = {...this.state, name: nameInput.value}
+        })
+        surnameInput.addEventListener('input', () => {
+            this.state = {...this.state, surname: surnameInput.value}
+        })
+        phoneNumberInput.addEventListener('input', () => {
+            this.state = {...this.state, phoneNumber: phoneNumberInput.value}
+        })
+        emailInput.addEventListener('input', () => {
+            this.state = {...this.state, email: emailInput.value}
+        })
+    }
 }
