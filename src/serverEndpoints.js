@@ -3,3 +3,5 @@ export const GEODECODE_URL = SERVER_URL + '/map/geodecode'
 export const REVERSE_GEO_URL = SERVER_URL + '/map/reverseGeo'
 
 export const UPLOAD_MEDIA_URL = SERVER_URL + '/upload/newListingMedia'
+
+export const CREATE_LISTING_URL = SERVER_URL + '/create-listing'
