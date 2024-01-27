@@ -10,7 +10,6 @@ const uploader = new MediaUploader()
 
 const mediaSection = document.getElementById('media-section')
 const mediaUploadImageEl = document.getElementById('image-drop-area')
-mediaUploadImageEl.classList.add('media-dnd-active')
 // const mediaHintEl = mediaSection.getElementsByClassName('drag-area-icon')[0]
 const mediaMainImgEl = mediaSection.getElementsByTagName('img')[0]
 const imagePreviewEls = document.querySelectorAll('.slider-items-container .slider-item')
