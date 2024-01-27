@@ -139,5 +139,8 @@ document.getElementById('post-listing-btn').addEventListener('click', async (e) 
     const respone = await fetch(CREATE_LISTING_URL, {
         body: JSON.stringify(listingData),
         method: 'post',
+        headers: {
+            "Content-Type": "application/json",
+        },
         credentials: 'include'})
 })
