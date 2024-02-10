@@ -1,7 +1,7 @@
 import Alpine from "alpinejs";
 
 import {CREATE_LISTING_URL, REVERSE_GEO_URL, SERVER_URL as serverUrl} from "serverEndpoints"
-import { initAddressSuggestionInput } from "./createListing/addressSuggestionInput"
+import { initAddressSuggestionInput } from "common/pages/addressSuggestionInput/addressSuggestionInput"
 import { initMap } from "./createListing/map"
 import './createListing/mediaUpload/'
 import {
