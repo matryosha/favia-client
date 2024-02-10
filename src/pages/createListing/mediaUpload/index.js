@@ -207,5 +207,3 @@ for (let index = 0; index < imagePreviewEls.length; index++) {
     const controlsOverlayEl = previewEl.querySelector('.slider-item-controls-overlay-container')
     controlsOverlayEl.setAttribute('x-show', `getImageUrl(${index}) !== ''`)
 }
-
-Alpine.start()

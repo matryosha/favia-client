@@ -1,3 +1,5 @@
+import Alpine from "alpinejs";
+
 import {CREATE_LISTING_URL, REVERSE_GEO_URL, SERVER_URL as serverUrl} from "serverEndpoints"
 import { initAddressSuggestionInput } from "./createListing/addressSuggestionInput"
 import { initMap } from "./createListing/map"
@@ -10,6 +12,7 @@ import {
     PropertyValuationSectionManager,
     SectionDisplayManager
 } from "./createListing/formStateManager"
+import {StepsManager} from "./createListing/stepsManager";
 
 
 const sectionDisplayManager = new SectionDisplayManager()
@@ -20,25 +23,41 @@ const propertyValuationSectionManager = new PropertyValuationSectionManager()
 const descriptionSectionManager = new DescriptionSectionManager()
 const contactsSectionManager = new ContactsSectionManager()
 
+const stepsManager = new StepsManager()
+// hack
+sectionDisplayManager.onSectionOpened('parameters', () => stepsManager.setStepStatus('address', true))
+// hack
+sectionDisplayManager.onSectionOpened('valuation', () => stepsManager.setStepStatus('media', true))
+
 goalSectionManger.onPropertyTypeCardClick(() => {
     sectionDisplayManager.showSection("address")
+
+    stepsManager.setStepStatus('goal', true)
 })
 
 parametersSectionManager.onRequiredIsFilled(() => {
     sectionDisplayManager.showSection('media')
     sectionDisplayManager.showSection('video')
+
+    stepsManager.setStepStatus('param', true)
 })
 
 propertyValuationSectionManager.onRequiredIsFilled(() => {
     sectionDisplayManager.showSection('description')
+
+    stepsManager.setStepStatus('propVal', true)
 })
 
 descriptionSectionManager.onMinimumCharactersFilled(() => {
     sectionDisplayManager.showSection('contacts')
+
+    stepsManager.setStepStatus('desc', true)
 })
 
 contactsSectionManager.onSectionFieldsFilled(() => {
     sectionDisplayManager.showSection('submit')
+
+    stepsManager.setStepStatus('contacts', true)
 })
 
 const autoSuggestion = initAddressSuggestionInput();
@@ -72,6 +91,9 @@ const map = initMap(async (e, setMapMarker) => {
 
     lastListingGeoPosition.lat = lat;
     lastListingGeoPosition.lon = lng;
+
+    stepsManager.setStepStatus('address', true)
+    sectionDisplayManager.showSection('parameters')
 
     isInReverseGeoProcess = false
 })
@@ -148,3 +170,5 @@ document.getElementById('post-listing-btn').addEventListener('click', async (e) 
         },
         credentials: 'include'})
 })
+
+Alpine.start()
