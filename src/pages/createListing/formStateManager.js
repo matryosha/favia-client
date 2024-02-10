@@ -13,7 +13,8 @@ export class SectionDisplayManager {
             video: document.getElementById('video-section'),
             valuation: document.getElementById('valuation-section'),
             description: document.getElementById('description-section'),
-            contacts: document.getElementById('contacts-section')
+            contacts: document.getElementById('contacts-section'),
+            submit: document.getElementById('submit-section')
         }
 
         throwIfUndefinedOrNullWithKeys({
@@ -24,7 +25,8 @@ export class SectionDisplayManager {
             videoSection: this.sectionEls.video,
             valuationSection: this.sectionEls.valuation,
             descriptionSection: this.sectionEls.description,
-            contactsSection: this.sectionEls.contacts
+            contactsSection: this.sectionEls.contacts,
+            submitSection: this.sectionEls.submit
         })
     }
 
@@ -602,6 +604,16 @@ export class ContactsSectionManager {
         email: ''
     }
 
+    #sectionFilledCb = () => {}
+    #afterSetUpdated = () => {
+        const {name, surname, phoneNumber, email} = this.state;
+        if (name.trim().length > 0 && surname.trim().length > 0 && phoneNumber.trim().length > 0 && email.trim().length > 0) {
+            this.#afterSetUpdated = () => {}
+            this.#sectionFilledCb()
+        }
+    }
+
+
     constructor() {
         const nameInput = document.getElementById('Name')
         const surnameInput = document.getElementById('Surname')
@@ -617,16 +629,26 @@ export class ContactsSectionManager {
 
         nameInput.addEventListener('input', () => {
             // GC goes wrrrrr or hello react
-            this.state = {...this.state, name: nameInput.value}
+            this.#setState({...this.state, name: nameInput.value})
         })
         surnameInput.addEventListener('input', () => {
-            this.state = {...this.state, surname: surnameInput.value}
+            this.#setState({...this.state, surname: surnameInput.value})
         })
         phoneNumberInput.addEventListener('input', () => {
-            this.state = {...this.state, phoneNumber: phoneNumberInput.value}
+            this.#setState({...this.state, phoneNumber: phoneNumberInput.value})
         })
         emailInput.addEventListener('input', () => {
-            this.state = {...this.state, email: emailInput.value}
+            this.#setState({...this.state, email: emailInput.value})
         })
+    }
+
+    onSectionFieldsFilled(cb) {
+        this.#sectionFilledCb = cb
+    }
+
+    #setState(state) {
+       this.state = state;
+
+       this.#afterSetUpdated()
     }
 }

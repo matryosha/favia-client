@@ -37,6 +37,10 @@ descriptionSectionManager.onMinimumCharactersFilled(() => {
     sectionDisplayManager.showSection('contacts')
 })
 
+contactsSectionManager.onSectionFieldsFilled(() => {
+    sectionDisplayManager.showSection('submit')
+})
+
 const autoSuggestion = initAddressSuggestionInput();
 
 let isInReverseGeoProcess = false
