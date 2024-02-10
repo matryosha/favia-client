@@ -3,9 +3,9 @@ import { debounce } from "utils";
 import './addressSuggestionInput.css'
 
 
-export function initAddressSuggestionInput() {
+export function initAddressSuggestionInput(opts) {
     const ac = new AddressAutoComplete()
-    ac.init(document.getElementById('address-input'))
+    ac.init(document.getElementById('address-input'), opts || {})
     return ac
 }
 
@@ -16,8 +16,12 @@ class AddressAutoComplete {
     #debounceKey = ''
     #suggestionSelectedCallback = undefined
 
+    // Used for all listing to increase chances of getting cities and not building etc
+    // https://nominatim.org/release-docs/latest/api/Search/#result-restriction &featureType=settlement
+    #tryGetSettlements = false
 
-    init(inputEl) {
+
+    init(inputEl, {tryGetSettlements = false}) {
         this.inputEl = inputEl
 
 
@@ -37,6 +41,10 @@ class AddressAutoComplete {
             await this.handleDebouncedInput(...args)
         }, 500)
         this.inputEl.addEventListener('input', (ev) => debouncedHandler(ev))
+
+        if (tryGetSettlements === true) {
+            this.#tryGetSettlements = true
+        }
     }
 
     async handleDebouncedInput(ev) {
@@ -50,7 +58,12 @@ class AddressAutoComplete {
         console.log(ev)
         console.log(this)
 
-        const result = await (await fetch(GEODECODE_URL + '?search=' + this.inputEl.value)).json()
+        let fetchUrl = GEODECODE_URL + '?search=' + this.inputEl.value
+        if (this.#tryGetSettlements) {
+            fetchUrl += '&searchForAllListings'
+        }
+
+        const result = await (await fetch(fetchUrl)).json()
 
         if (result.length === 0) {
             this.hideSuggestContainer()
