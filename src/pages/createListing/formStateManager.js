@@ -294,6 +294,7 @@ export class GoalSectionStateManager {
         cardsSectionEl.forEach(elToUpdate => {
             if (elToUpdate !== clickedOnCardEl) {
                 elToUpdate.classList.add(this.#cardBlockInactiveClassName)
+                elToUpdate.classList.remove(this.#cardBlockActiveClassName)
             }
         })
         clickedOnCardEl.classList.remove(this.#cardBlockInactiveClassName)
