@@ -367,7 +367,9 @@ export class ParametersSectionManager {
         floorTotalNumber: null,
         flatType: '',
         energyClass: '',
-        furniture: ''
+        furniture: '',
+        propertyCondition: '',
+        construction: ''
     }
 
     #afterStateChangedCb = undefined
@@ -386,6 +388,8 @@ export class ParametersSectionManager {
         const flatTypeInputEl = id('Flat-type-field')
         const energyClassInputEl = id('Energy-class-field')
         const furnitureInputEl = id('Furniture-field')
+        const propertyConditionInputEl = id('Condition-Field')
+        const constructionInputEl = id('Furniture-field-2')
         const longTermRadioEl = id('long-term-radio-input')
         const shortTermRadioEl = id('short-term-radio-input')
         const floorNumberInputEl = id('fs-inputcounter-1-input')
@@ -400,6 +404,8 @@ export class ParametersSectionManager {
             flatTypeInputEl,
             energyClassInputEl,
             furnitureInputEl,
+            propertyConditionInputEl,
+            constructionInputEl,
             longTermRadioEl,
             shortTermRadioEl,
             floorNumberInputEl,
@@ -419,6 +425,8 @@ export class ParametersSectionManager {
             flatType: flatTypeInputEl.value,
             energyClass: energyClassInputEl.value,
             furniture: furnitureInputEl.value,
+            propertyCondition: propertyConditionInputEl.value,
+            construction: constructionInputEl.value,
             rentTermType: currentRentType,
         }
 
@@ -445,6 +453,12 @@ export class ParametersSectionManager {
         })
         furnitureInputEl.addEventListener('change', () => {
             this.#setStateAndLog({...this.state, furniture: furnitureInputEl.value})
+        })
+        propertyConditionInputEl.addEventListener('change', () => {
+            this.#setStateAndLog({...this.state, propertyCondition: propertyConditionInputEl.value})
+        })
+        constructionInputEl.addEventListener('change', () => {
+            this.#setStateAndLog({...this.state, construction: constructionInputEl.value})
         })
         longTermRadioEl.addEventListener('click', () => {
             this.#setStateAndLog({...this.state, rentTermType: 'long'})
