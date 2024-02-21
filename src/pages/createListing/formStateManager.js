@@ -369,7 +369,16 @@ export class ParametersSectionManager {
         energyClass: '',
         furniture: '',
         propertyCondition: '',
-        construction: ''
+        construction: '',
+
+        hasElevator: false,
+        hasGarage: false,
+        hasGarden: false,
+        hasBasement: false,
+        hasStorageRoom: false,
+        hasBalcony: false,
+        hasTerrace: false,
+        isMultilevel: false
     }
 
     #afterStateChangedCb = undefined
@@ -395,6 +404,15 @@ export class ParametersSectionManager {
         const floorNumberInputEl = id('fs-inputcounter-1-input')
         const floorTotalNumberInputEl = id('fs-inputcounter-2-input')
 
+        const elevatorTglEl = id('elevator-toggle')
+        const garageTglEl = id('garage-toggle')
+        const gardenTglEl = id('garden-toggle')
+        const basementTglEl = id('basement-toggle')
+        const storageRoomTglEl = id('storage-room-toggle')
+        const balconyTglEl = id('balcony-toggle')
+        const terraceTglEl = id('terrace-toggle')
+        const multilevelTglEl = id('multilevel-toggle')
+
         throwIfUndefinedOrNullWithKeys({
             totalAreaInputEl,
             petsTglEl,
@@ -409,7 +427,16 @@ export class ParametersSectionManager {
             longTermRadioEl,
             shortTermRadioEl,
             floorNumberInputEl,
-            floorTotalNumberInputEl
+            floorTotalNumberInputEl,
+
+            elevatorTglEl,
+            garageTglEl,
+            gardenTglEl,
+            basementTglEl,
+            storageRoomTglEl,
+            balconyTglEl,
+            terraceTglEl,
+            multilevelTglEl
         })
 
         let currentRentType;
@@ -472,6 +499,32 @@ export class ParametersSectionManager {
         floorTotalNumberInputEl.addEventListener('input', () => {
             this.#setStateAndLog({...this.state, floorTotalNumber: floorTotalNumberInputEl.value})
         })
+
+        elevatorTglEl.addEventListener('click', () => {
+            this.#setStateAndLog({...this.state, hasElevator: !this.state.hasElevator})
+        })
+        garageTglEl.addEventListener('click', () => {
+            this.#setStateAndLog({...this.state, hasGarage: !this.state.hasGarage})
+        })
+        gardenTglEl.addEventListener('click', () => {
+            this.#setStateAndLog({...this.state, hasGarden: !this.state.hasGarden})
+        })
+        basementTglEl.addEventListener('click', () => {
+            this.#setStateAndLog({...this.state, hasBasement: !this.state.hasBasement})
+        })
+        storageRoomTglEl.addEventListener('click', () => {
+            this.#setStateAndLog({...this.state, hasStorageRoom: !this.state.hasStorageRoom})
+        })
+        balconyTglEl.addEventListener('click', () => {
+            this.#setStateAndLog({...this.state, hasBalcony: !this.state.hasBalcony})
+        })
+        terraceTglEl.addEventListener('click', () => {
+            this.#setStateAndLog({...this.state, hasTerrace: !this.state.hasTerrace})
+        })
+        multilevelTglEl.addEventListener('click', () => {
+            this.#setStateAndLog({...this.state, isMultilevel: !this.state.isMultilevel})
+        })
+
 
         this.#afterStateChangedCb = () => this.#checkAndNotifyIfRequiredIsFilled();
     }
