@@ -370,6 +370,7 @@ export class ParametersSectionManager {
         furniture: '',
         propertyCondition: '',
         construction: '',
+        date: '',
 
         hasElevator: false,
         hasGarage: false,
@@ -403,6 +404,7 @@ export class ParametersSectionManager {
         const shortTermRadioEl = id('short-term-radio-input')
         const floorNumberInputEl = id('fs-inputcounter-1-input')
         const floorTotalNumberInputEl = id('fs-inputcounter-2-input')
+        const dateInputEl = id('minMaxExample12')
 
         const elevatorTglEl = id('elevator-toggle')
         const garageTglEl = id('garage-toggle')
@@ -428,6 +430,7 @@ export class ParametersSectionManager {
             shortTermRadioEl,
             floorNumberInputEl,
             floorTotalNumberInputEl,
+            dateInputEl,
 
             elevatorTglEl,
             garageTglEl,
@@ -499,6 +502,16 @@ export class ParametersSectionManager {
         floorTotalNumberInputEl.addEventListener('input', () => {
             this.#setStateAndLog({...this.state, floorTotalNumber: floorTotalNumberInputEl.value})
         })
+        // datepicker.changed event listened in jq and then buble up with Dispatch method. See webflow page code for $datepicker
+        dateInputEl.addEventListener('datepicker.changed', () => {
+            // hack cuz do not want to open webflow. Get jquery event date and bubble it up to normal event.
+            // So just wait when input is updated and then grab the value
+            // ebal v r rot koroche
+            setTimeout(() => {
+                this.#setStateAndLog({...this.state, date: dateInputEl.value})
+            })
+        })
+
 
         elevatorTglEl.addEventListener('click', () => {
             this.#setStateAndLog({...this.state, hasElevator: !this.state.hasElevator})
