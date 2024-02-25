@@ -54,6 +54,10 @@ export class SectionDisplayManager {
         }
     }
 
+    scrollToSection(sectionName) {
+        this.sectionEls[sectionName].scrollIntoView({behavior: 'smooth'})
+    }
+
     hideSection(sectionName) {
         this.#hideEl(this.sectionEls[sectionName])
     }

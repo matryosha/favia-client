@@ -23,7 +23,7 @@ const propertyValuationSectionManager = new PropertyValuationSectionManager()
 const descriptionSectionManager = new DescriptionSectionManager()
 const contactsSectionManager = new ContactsSectionManager()
 
-const stepsManager = new StepsManager()
+const stepsManager = new StepsManager(sectionDisplayManager.scrollToSection.bind(sectionDisplayManager))
 // hack
 sectionDisplayManager.onSectionOpened('parameters', () => stepsManager.setStepStatus('address', true))
 // hack
