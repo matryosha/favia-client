@@ -33,6 +33,11 @@ goalSectionManger.onPropertyTypeCardClick(() => {
     sectionDisplayManager.showSection("address")
 
     stepsManager.setStepStatus('goal', true)
+
+    setTimeout(() => {
+        sectionDisplayManager.scrollToSection('address')
+        map.invalidateMapSize()
+    })
 })
 
 parametersSectionManager.onRequiredIsFilled(() => {
